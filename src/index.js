@@ -3,8 +3,11 @@ import ReactDOM from "react-dom";
 import FancyTime from "./fancyClock/FancyTime";
 import Quote from "./Quote";
 
+import openSocket from "socket.io-client";
+
 import "./styles.css";
 import "./text.css";
+const socket = openSocket("http://localhost:8000");
 
 class App extends React.Component {
   constructor(props) {
@@ -17,6 +20,10 @@ class App extends React.Component {
     setInterval(() => {
       this.IncreaseMinute();
     }, 1000);
+    socket.on("refresh", data => {
+      console.log("Received refresh");
+      this.setState({ hour1: 0, hour2: 0, minute1: 0, minute2: 0 });
+    });
   }
 
   IncreaseMinute() {
